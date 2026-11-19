@@ -3,13 +3,15 @@
 #include <pthread.h>
 
 int n;
-long long sum = 0;
+int sum = 0;
 
-void *calculate_sum(void *arg)
+void *calculate(void *arg)
 {
-    for (int i = 1; i <= n; i++)
+    int i;
+
+    for(i = 1; i <= n; i++)
     {
-        sum += i;
+        sum = sum + i;
     }
 
     return NULL;
@@ -17,16 +19,16 @@ void *calculate_sum(void *arg)
 
 int main()
 {
-    pthread_t thread;
+    pthread_t t1;
 
     printf("Enter the value of n: ");
     scanf("%d", &n);
 
-    pthread_create(&thread, NULL, calculate_sum, NULL);
+    pthread_create(&t1, NULL, calculate, NULL);
 
-    pthread_join(thread, NULL);
+    pthread_join(t1, NULL);
 
-    printf("Sum of first %d natural numbers = %lld\n", n, sum);
+    printf("Sum of first %d natural numbers = %d\n", n, sum);
 
     return 0;
 }
