@@ -1,0 +1,90 @@
+info maint comm
+
+wc filename.txt
+clear
+cal
+who
+date
+pwd
+
+File mana comm
+
+cat file.txt
+cp file.txt copy.txt
+rm copy.txt
+mv file.txt newfile.txt
+cmp file1.txt file2.txt
+comm file1.txt file2.txt
+diff file1.txt file2.txt
+find . -name "*.txt"
+grep "hello" newfile.txt
+awk '{print $1}' newfile.txt
+
+direc mana comm
+
+mkdir OS_Practical
+cd OS_Practical
+ls
+cd ..
+rmdir OS_Practical
+
+Question 4. Write a program using fork() and/or exec() where parent and child execute:
+(i) Same program, same code
+Program (C):
+#include <stdio.h>
+#include <unistd.h>
+
+int main()
+{
+    fork();
+
+    printf("Hello from process!\n");
+
+    return 0;
+}
+
+ii) Same program, different code
+Program (C):
+#include <stdio.h>
+#include <unistd.h>
+
+int main()
+{
+    int pid = fork();
+
+    if (pid == 0)
+    {
+        printf("This is Child Process\n");
+    }
+    else
+    {
+        printf("This is Parent Process\n");
+    }
+
+    return 0;
+}
+
+(iii) Parent waits for the child to finish its task before terminating
+Program (C):
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/wait.h>
+
+int main()
+{
+    int pid = fork();
+
+    if (pid == 0)
+    {
+        printf("Child Process is running\n");
+        sleep(2);
+        printf("Child Process completed\n");
+    }
+    else
+    {
+        wait(NULL);
+        printf("Parent Process completed\n");
+    }
+
+    return 0;
+}
