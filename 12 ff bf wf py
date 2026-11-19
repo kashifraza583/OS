@@ -1,0 +1,45 @@
+
+def allocate(blocks, processes, method):
+
+    memory = blocks.copy()
+    allocation = [-1] * len(processes)
+
+    for i in range(len(processes)):
+
+        suitable = []
+
+        for j in range(len(memory)):
+            if memory[j] >= processes[i]:
+                suitable.append(j)
+
+        if not suitable:
+            continue
+
+        if method == "First Fit":
+            index = suitable[0]
+
+        elif method == "Best Fit":
+            index = min(suitable, key=lambda j: memory[j])
+
+        elif method == "Worst Fit":
+            index = max(suitable, key=lambda j: memory[j])
+
+        allocation[i] = index
+        memory[index] -= processes[i]
+
+    print("\n", method)
+    print("Process\tSize\tBlock")
+
+    for i in range(len(processes)):
+        if allocation[i] != -1:
+            print(f"P{i+1}\t{processes[i]}\tB{allocation[i]+1}")
+        else:
+            print(f"P{i+1}\t{processes[i]}\tNot Allocated")
+
+
+blocks = [100, 500, 200, 300, 600]
+processes = [212, 417, 112, 426]
+
+allocate(blocks, processes, "First Fit")
+allocate(blocks, processes, "Best Fit")
+allocate(blocks, processes, "Worst Fit")
