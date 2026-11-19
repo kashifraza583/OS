@@ -1,0 +1,52 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/utsname.h>
+
+int main()
+{
+    struct utsname info;
+
+    if (uname(&info) == -1)
+    {
+        perror("uname");
+        return 1;
+    }
+
+    printf("LINUX KERNEL INFORMATION\n");
+    printf("------------------------\n");
+
+    printf("System Name  : %s\n", info.sysname);
+    printf("Kernel Name  : %s\n", info.release);
+    printf("Kernel Version: %s\n", info.version);
+    printf("Machine Type : %s\n", info.machine);
+
+    FILE *fp = fopen("/proc/cpuinfo", "r");
+
+    if (fp == NULL)
+    {
+        perror("cpuinfo");
+        return 1;
+    }
+
+    char line[256];
+
+    printf("\nCPU INFORMATION\n");
+    printf("------------------------\n");
+
+    while (fgets(line, sizeof(line), fp))
+    {
+        if (strncmp(line, "vendor_id", 9) == 0 ||
+            strncmp(line, "model name", 10) == 0 ||
+            strncmp(line, "cpu MHz", 7) == 0 ||
+            strncmp(line, "cpu cores", 9) == 0)
+        {
+            printf("%s", line);
+        }
+    }
+
+    fclose(fp);
+
+    return 0;
+}
